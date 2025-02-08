@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+
+#contenido-nav {
+    overflow-x: hidden;
+    overflow-y: scroll hidden;
+}
+
+#contenido-nav::-webkit-scrollbar {
+    display: none;  /* Ocultar scroll */
+}
+
+.estilos-nav {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+
+@media (max-width: 1199px) {
+    .estilos-nav {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        position: static;
+        height: auto;
+        border-top-right-radius: 0px;
+        border-bottom-left-radius: 35px;
+        border-bottom-right-radius: 35px;
+    }
+
+    #contenido-nav {
+        margin-top: 15px;
+    }
+
+    .flex-menu {
+        justify-content: center;
+    }
+
+}
