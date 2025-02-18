@@ -19,7 +19,7 @@ Además, cuenta con un módulo de configuración para gestionar categorías, pro
 | CSS3 | Estilos |
 | Javascript | Interactividad con el usuario y con los datos utilizados |
 
-## Frameworks utilizados
+## Librerías utilizadas
 - DataTable: [Enlace a su web oficial](https://datatables.net/)
 - ApexCharts.JS: [Enlace a su web oficial](https://apexcharts.com/)
 - Isotope: [Enlace a su web oficial](https://isotope.metafizzy.co/)
