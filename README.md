@@ -1,4 +1,6 @@
 # Proyecto Gestión de Productos Electrónicos
+![Página de inicio](https://i.imgur.com/NdhkOED.png)
+
 ## Descripción
 
 Aplicación web para la gestión y ventas de productos electrónicos implementado con Jakarta EE y MySQL,
@@ -19,8 +21,8 @@ Además, cuenta con un módulo de configuración para gestionar categorías, pro
 
 ## Frameworks utilizados
 - DataTable: [Enlace a su web oficial](https://datatables.net/)
-- APEXCHARTS.JS [Enlace a su web oficial](https://apexcharts.com/)
-- Isotope [Enlace a su web oficial](https://isotope.metafizzy.co/)
+- ApexCharts.JS: [Enlace a su web oficial](https://apexcharts.com/)
+- Isotope: [Enlace a su web oficial](https://isotope.metafizzy.co/)
 
 ## Probar la aplicación
 1. Clonar el repositorio:  
@@ -52,3 +54,5 @@ Además, cuenta con un módulo de configuración para gestionar categorías, pro
 >
 >Ejecutar los script SQL incluidos en el repositorio para el funcionamiento de las credenciales.
 
+---
+***Proyecto hecho con mucho entusiasmo y diversión. 🚀✨***  
