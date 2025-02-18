@@ -1,6 +1,5 @@
 package interfaces;
 
-
 import java.sql.Date;
 import java.util.List;
 
@@ -19,6 +18,7 @@ public interface VentaInterface {
 	public int eliminarVentaPorId(int idVenta);
 	
 	public List<VentasDiarias> ventasDiarias();
+	public List<Venta> montoTotalDiario();
 	
 	// FUNCIONES ADICINALES
 	public List<Venta> encontrarVentasPorCliente(int idCliente);

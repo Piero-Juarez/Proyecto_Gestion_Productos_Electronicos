@@ -14,8 +14,8 @@ public class MySQLConnection {
 			
 			// Definimos los parámetros para la conexión a MySQL
 			String url = "jdbc:mysql://localhost:3306/db_imperio_electronico?useSSL=false&useTimezone=true&serverTimezone=UTC";
-			String user = "root";
-			String password = "admin";
+			String user = "..."; // Usuario Propio
+			String password = "..."; // Contraseña Propia
 			
 			connection = DriverManager.getConnection(url, user, password);
 		} catch (ClassNotFoundException e) {

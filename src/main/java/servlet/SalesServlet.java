@@ -345,15 +345,12 @@ public class SalesServlet extends HttpServlet {
 
 	    String rutaFisica = getServletContext().getRealPath("/pdfBoletas/" + nombreBoleta);
 	    try(FileOutputStream fos = new FileOutputStream(rutaFisica)) {
-	        // 1. Crear el documento con tamaño A4 y márgenes
 	        Document document = new Document(
 	            PageSize.A4, 36, 36, 36, 36
 	        );
 
-	        // 2. Generar el PdfWriter (en un servlet, se usa response.getOutputStream())
 	        PdfWriter.getInstance(document, fos);
 
-	        // 3. Abrir el documento
 	        document.open();
 
 	        // ========== ENCABEZADO ==========
@@ -364,54 +361,41 @@ public class SalesServlet extends HttpServlet {
 	        // Espacio
 	        document.add(new Paragraph(" "));
 
-	        // Tabla para datos de la boleta: 8 filas x 2 columnas
 	        PdfPTable tablaEncabezado = new PdfPTable(2);
 	        tablaEncabezado.setWidthPercentage(100);
 
-	        // Fila 1: Número de la boleta
 	        tablaEncabezado.addCell("Nro. Boleta:");
 	        tablaEncabezado.addCell("B-" + String.valueOf(ultimaVentaBoleta));
 
-	        // Fila 2: Fecha
 	        tablaEncabezado.addCell("Fecha:");
 	        tablaEncabezado.addCell(String.valueOf(ventaObtenida.getFecha()));
 
-	        // Fila 3: Hora
 	        tablaEncabezado.addCell("Hora:");
 	        tablaEncabezado.addCell(String.valueOf(ventaObtenida.getHora()));
 
-	        // Fila 4: Nombre del cliente
 	        tablaEncabezado.addCell("Nombre Cliente:");
 	        tablaEncabezado.addCell(String.valueOf(clienteObtenido.getNombreCliente()));
 
-	        // Fila 5: Apellido del cliente
 	        tablaEncabezado.addCell("Apellido Cliente:");
 	        tablaEncabezado.addCell(String.valueOf(clienteObtenido.getApellidoCliente()));
 
-	        // Fila 6: DNI del cliente
 	        tablaEncabezado.addCell("DNI Cliente:");
 	        tablaEncabezado.addCell(String.valueOf(clienteObtenido.getDniCliente()));
 
-	        // Fila 7: Nombre del trabajador
 	        tablaEncabezado.addCell("Nombre Trabajador:");
 	        tablaEncabezado.addCell(String.valueOf(trabajadorObtenido.getNombresTrabajador()));
 
-	        // Fila 8: Cargo del trabajador
 	        tablaEncabezado.addCell("Cargo Trabajador:");
 	        tablaEncabezado.addCell(String.valueOf(trabajadorObtenido.getNombreCargo()));
 
 	        document.add(tablaEncabezado);
 
-	        // Espacio
 	        document.add(new Paragraph(" "));
 
 	        // ========== CUERPO (Detalle de Productos) ==========
-	        // Tabla con 6 columnas: SKU, Producto, Cantidad, Precio Unit, IGV 18%, Subtotal
 	        PdfPTable tablaDetalle = new PdfPTable(6);
 	        tablaDetalle.setWidthPercentage(100);
 
-	        
-	        // Encabezados de tabla
 	        tablaDetalle.addCell(encabezadoTabla("SKU"));
 	        tablaDetalle.addCell(encabezadoTabla("Producto"));
 	        tablaDetalle.addCell(encabezadoTabla("Cantidad"));
@@ -419,21 +403,19 @@ public class SalesServlet extends HttpServlet {
 	        tablaDetalle.addCell(encabezadoTabla("IGV 18%"));
 	        tablaDetalle.addCell(encabezadoTabla("Subtotal"));
 
-	        // Ejemplo de filas (puedes llenarlas de manera dinámica según tu venta)
 	        for(DetalleVenta item: listaDetalleVentaObtenido) {
 	        	Producto productoAux = daoProducto.encontrarProducto(item.getIdProducto());
 		        tablaDetalle.addCell(String.valueOf(productoAux.getSkuProducto()));
 		        tablaDetalle.addCell(String.valueOf(productoAux.getNombreProducto()));
 		        tablaDetalle.addCell(String.valueOf(item.getCantidad()));
 		        tablaDetalle.addCell("S/" + String.valueOf(item.getPrecioUnitario()));
-		        tablaDetalle.addCell("S/" + String.valueOf(item.getIgv()));   // 18% de S/ 20.00
-		        tablaDetalle.addCell("S/" + String.valueOf(item.getSubtotal()));  // 20 + 3.6
+		        tablaDetalle.addCell("S/" + String.valueOf(item.getIgv()));
+		        tablaDetalle.addCell("S/" + String.valueOf(item.getSubtotal()));
 		        igvAux = igvAux.add(item.getIgv());
 	        }
 
 	        document.add(tablaDetalle);
 
-	        // Espacio
 	        document.add(new Paragraph(" "));
 
 	        // ========== PIE (Resumen de montos y método de pago) ==========
@@ -447,7 +429,7 @@ public class SalesServlet extends HttpServlet {
 	        tablaPie.addCell("S/" + String.valueOf(igvAux));
 
 	        tablaPie.addCell("Método de Pago:");
-	        tablaPie.addCell(String.valueOf(metodoPagoObtenido.getNombreMetodoPago())); // o "Efectivo"
+	        tablaPie.addCell(String.valueOf(metodoPagoObtenido.getNombreMetodoPago()));
 
 	        String mensajeDineroCliente = ventaObtenida.getDineroCliente().compareTo(BigDecimal.ZERO) == 0 ? "N/A" : "S/" + ventaObtenida.getDineroCliente();
 	        tablaPie.addCell("Dinero del Cliente:");
@@ -459,7 +441,6 @@ public class SalesServlet extends HttpServlet {
 
 	        document.add(tablaPie);
 
-	        // 4. Cerrar el documento
 	        document.close();
 	        
 	    } catch (Exception e) {
@@ -485,15 +466,12 @@ public class SalesServlet extends HttpServlet {
 
 	    String rutaFisica = getServletContext().getRealPath("/pdfFacturas/" + nombreBoleta);
 	    try(FileOutputStream fos = new FileOutputStream(rutaFisica)) {
-	        // 1. Crear el documento con tamaño A4 y márgenes
 	        Document document = new Document(
 	            PageSize.A4, 36, 36, 36, 36
 	        );
 
-	        // 2. Generar el PdfWriter (en un servlet, se usa response.getOutputStream())
 	        PdfWriter.getInstance(document, fos);
 
-	        // 3. Abrir el documento
 	        document.open();
 
 	        // ========== ENCABEZADO ==========
@@ -504,7 +482,6 @@ public class SalesServlet extends HttpServlet {
 	        // Espacio
 	        document.add(new Paragraph(" "));
 
-	        // Tabla para datos de la boleta: 8 filas x 2 columnas
 	        PdfPTable tablaEncabezado = new PdfPTable(2);
 	        tablaEncabezado.setWidthPercentage(100);
 
@@ -547,7 +524,6 @@ public class SalesServlet extends HttpServlet {
 	        document.add(new Paragraph(" "));
 
 	        // ========== CUERPO (Detalle de Productos) ==========
-	        // Tabla con 6 columnas: SKU, Producto, Cantidad, Precio Unit, IGV 18%, Subtotal
 	        PdfPTable tablaDetalle = new PdfPTable(6);
 	        tablaDetalle.setWidthPercentage(100);
 
@@ -560,21 +536,19 @@ public class SalesServlet extends HttpServlet {
 	        tablaDetalle.addCell(encabezadoTabla("IGV 18%"));
 	        tablaDetalle.addCell(encabezadoTabla("Subtotal"));
 
-	        // Ejemplo de filas (puedes llenarlas de manera dinámica según tu venta)
 	        for(DetalleVenta item: listaDetalleVentaObtenido) {
 	        	Producto productoAux = daoProducto.encontrarProducto(item.getIdProducto());
 		        tablaDetalle.addCell(String.valueOf(productoAux.getSkuProducto()));
 		        tablaDetalle.addCell(String.valueOf(productoAux.getNombreProducto()));
 		        tablaDetalle.addCell(String.valueOf(item.getCantidad()));
 		        tablaDetalle.addCell("S/" + String.valueOf(item.getPrecioUnitario()));
-		        tablaDetalle.addCell("S/" + String.valueOf(item.getIgv()));   // 18% de S/ 20.00
-		        tablaDetalle.addCell("S/" + String.valueOf(item.getSubtotal()));  // 20 + 3.6
+		        tablaDetalle.addCell("S/" + String.valueOf(item.getIgv()));
+		        tablaDetalle.addCell("S/" + String.valueOf(item.getSubtotal()));
 		        igvAux = igvAux.add(item.getIgv());
 	        }
 
 	        document.add(tablaDetalle);
 
-	        // Espacio
 	        document.add(new Paragraph(" "));
 
 	        // ========== PIE (Resumen de montos y método de pago) ==========
@@ -588,7 +562,7 @@ public class SalesServlet extends HttpServlet {
 	        tablaPie.addCell("S/" + String.valueOf(igvAux));
 
 	        tablaPie.addCell("Método de Pago:");
-	        tablaPie.addCell(String.valueOf(metodoPagoObtenido.getNombreMetodoPago())); // o "Efectivo"
+	        tablaPie.addCell(String.valueOf(metodoPagoObtenido.getNombreMetodoPago()));
 
 	        String mensajeDineroCliente = ventaObtenida.getDineroCliente().compareTo(BigDecimal.ZERO) == 0 ? "N/A" : "S/" + ventaObtenida.getDineroCliente();
 	        tablaPie.addCell("Dinero del Cliente:");
@@ -600,7 +574,6 @@ public class SalesServlet extends HttpServlet {
 
 	        document.add(tablaPie);
 
-	        // 4. Cerrar el documento
 	        document.close();
 	        
 	    } catch (Exception e) {
@@ -615,9 +588,6 @@ public class SalesServlet extends HttpServlet {
 	    
 	}
 	
-	/**
-	 * Método auxiliar para formatear las celdas de encabezado de tabla.
-	 */
 	private PdfPCell encabezadoTabla(String texto) {
 	    Font fontEncabezado = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
 	    PdfPCell cell = new PdfPCell(new Paragraph(texto, fontEncabezado));

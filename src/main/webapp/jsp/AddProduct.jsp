@@ -29,22 +29,6 @@
 
 <body>
 	
-	<%
-	if (
-			session.getAttribute("listadoCategoria") == null ||
-			session.getAttribute("listadoMarca") == null ||
-			session.getAttribute("listadoProveedor") == null ||
-			session.getAttribute("listadoEstadoProducto") == null ||
-			session.getAttribute("listadoProductos") == null
-		) {
-	%>
-		<script type="text/javascript">
-			window.location.href="${pageContext.request.contextPath}/ProductServlet?service=AddProduct&serviceAdd=listar";
-		</script>
-	<%
-		}
-	%>
-	
 	<div class="container-fluid vh-100 d-flex flex-column" data-barba="container" data-barba-namespace="home">
         <div class="row flex-grow-1">
 
@@ -75,9 +59,10 @@
 							    <div class="col-md-6 mb-3">
 							        <%
 							            int contadorProductos;
-							            List<Producto> listadoProductos = (List<Producto>) session.getAttribute("listadoProductos");
-							            if (listadoProductos != null) {
-							                contadorProductos = listadoProductos.size() + 1;
+						        		
+							            if (request.getAttribute("ultimoIdProducto") != null) {
+							            	int ultimoIdProducto = Integer.parseInt(String.valueOf(request.getAttribute("ultimoIdProducto")));
+							            	contadorProductos = ultimoIdProducto + 1;
 							            } else {
 							                contadorProductos = 1;
 							            }
@@ -219,7 +204,7 @@
 
 			            <!-- Botón -->
 			            <div class="text-center mt-5">
-			            	<button onclick="window.location.href='jsp/Products.jsp'" type="button" class="btn btn-dark px-5 mx-2">
+			            	<button onclick="window.location.href='${pageContext.request.contextPath}/ProductServlet?service=Product'" type="button" class="btn btn-dark px-5 mx-2">
 			            		Volver <i class="bi bi-box-arrow-left ps-1"></i>
 			            	</button>
 			                <button type="submit" class="btn btn-dark px-5 mx-2">

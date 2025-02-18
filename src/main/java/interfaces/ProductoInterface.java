@@ -25,14 +25,23 @@ public interface ProductoInterface {
 	public int cantidadStockProductoSegunId(int idProducto);
 	public void descontarStockPorId(int idProducto, int stockDescontado);
 	
+	public List<Producto> listarProductosPorCategoria();
+	public List<Producto> listarStockProducto ();
+	public List<Producto> listarProductosMasIngresos();
+	public List<Producto> listarProductosPorIdCategoria(int idCategoria);
+	public List<Producto> listarProductosPorIdMarca(int idMarca);
+	public List<Producto> listarProductosPorIdProveedor(int idProveedor);
+	public List<Producto> listarProductosPorIdEstadoProducto(int idEstadoProducto);
+	
 	// CRUD CATEGORIA
 	public int crearCategoria(Categoria nuevaCategoria);
 	public Categoria encontrarCategoria(int idCategoria);
 	public List<Categoria> listarCategorias();
 	public int actualizarCategoria(Categoria categoriaExistente);
 	public void eliminarCategoria(int idCategoria);
-	
+
 	public int contarProductosPorCategoria(int idCategoria);
+	public List<Producto> listarCantidadProductosPorCategoria();
 	
 	// CRUD ESTADO PRODUCTO
 	public int crearEstadoProducto(EstadoProducto nuevoEstadoProducto);

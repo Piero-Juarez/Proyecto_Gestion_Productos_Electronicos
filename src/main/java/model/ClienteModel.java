@@ -10,7 +10,9 @@ import java.util.List;
 
 import database.MySQLConnection;
 import entity.cliente.Cliente;
+import entity.cliente.ClienteDocumento;
 import entity.producto.Producto;
+import entity.venta.MetodoPagoPreferido;
 import interfaces.ClienteInterface;
 
 public class ClienteModel implements ClienteInterface {
@@ -363,6 +365,84 @@ public class ClienteModel implements ClienteInterface {
 		}
 		
 		return listaMasUnidades	;
+	}
+
+	@Override
+	public List<ClienteDocumento> listaCantidadClienteSegunDocumento() {
+		List<ClienteDocumento> lista = new ArrayList<ClienteDocumento>();
+		Connection connection = null;
+		CallableStatement callableStatement = null;
+		ResultSet resultSet = null;
+		
+		try{
+			
+			connection = MySQLConnection.getConection();
+			String sentenciaSQL = "{ call sp_distribucionClientesPorDocumento() }";
+			callableStatement = connection.prepareCall(sentenciaSQL);
+			
+			resultSet = callableStatement.executeQuery();
+			
+			while(resultSet != null && resultSet.next()) {
+				ClienteDocumento clienteDocumento = new ClienteDocumento();
+				clienteDocumento.setTipoDocumento(resultSet.getString("tipo_documento"));
+				clienteDocumento.setContadorClienteDocumento(resultSet.getInt("cantidad_clientes"));
+				lista.add(clienteDocumento);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				 if (resultSet != null) { resultSet.close(); }
+		         if (callableStatement != null) { callableStatement.close(); }
+		         if (connection != null) { connection.close(); }
+			}catch(Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return lista;
+	}
+
+	@Override
+	public List<MetodoPagoPreferido> metodoPagoPreferidoCliente() {
+		List<MetodoPagoPreferido> metodoPagoPreferido = new ArrayList <MetodoPagoPreferido>();
+		
+		Connection connection = null;
+		CallableStatement callableStatement = null;
+		ResultSet resultSet = null;
+		
+		try {
+			
+			connection = MySQLConnection.getConection();
+			String sentenciaSQL = "{ CALL sp_preferencia_pago() }";
+			callableStatement = connection.prepareCall(sentenciaSQL);
+			
+			resultSet = callableStatement.executeQuery();
+			
+			while (resultSet != null && resultSet.next()) {
+				MetodoPagoPreferido productoAux = new MetodoPagoPreferido();
+				
+				productoAux.setNombreMetodoPago(resultSet.getString("nombre"));
+				productoAux.setContadorMetodoPago(resultSet.getInt("metodo_pago"));
+				metodoPagoPreferido.add(productoAux);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				
+	            if (resultSet != null) { resultSet.close(); }
+	            if (callableStatement != null) { callableStatement.close(); }
+	            if (connection != null) { connection.close(); }
+				
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return metodoPagoPreferido;
 	}
 
 }

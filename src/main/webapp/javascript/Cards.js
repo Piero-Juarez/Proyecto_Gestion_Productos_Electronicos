@@ -8,13 +8,11 @@ let cardCount = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
     const savedCards = getCards();
-    // Sincronizar el cardCount con el ID más alto de las tarjetas guardadas
+
     cardCount = Object.keys(savedCards).length ? Math.max(...Object.keys(savedCards).map(Number)) + 1 : 0;
 
-    // Crear las tarjetas guardadas
     Object.entries(savedCards).forEach(([id, content]) => createCard(content, parseInt(id)));
     
-    // Verificar si el botón debe estar oculto al inicio
     if (Object.keys(savedCards).length >= 5) {
         addCardBtn.style.display = 'none';
     }
@@ -43,7 +41,6 @@ function createCard(content = '', id = cardCount++) {
 	
     const currentCards = Object.keys(getCards()).length;
 
-    // Ocultar el botón si el número de tarjetas alcanza el límite
     if (currentCards >= 4) {
         addCardBtn.style.display = 'none';
     }
@@ -75,7 +72,6 @@ function removeCard(card, id) {
     cardCount--;
     const currentCards = Object.keys(getCards()).length;
 
-    // Mostrar el botón si hay menos de 5 tarjetas
     if (currentCards < 5) {
         addCardBtn.style.display = 'block';
     }

@@ -1385,4 +1385,397 @@ public class ProductoModel implements ProductoInterface {
 	    return productos;
 	}
 
+	@Override
+	public List<Producto> listarProductosPorIdCategoria(int idCategoria) {
+	    Connection connection = null;
+	    CallableStatement callableStatement = null;
+	    ResultSet resultSet = null;
+	    List<Producto> productos = new ArrayList<>();
+
+	    try {
+	        connection = MySQLConnection.getConection();
+	        String sentenciaSQL = "{ CALL sp_listarProductosPorIdCategoria(?) }";
+	        callableStatement = connection.prepareCall(sentenciaSQL);
+			callableStatement.setInt(1, idCategoria);
+	        resultSet = callableStatement.executeQuery();
+
+	        while (resultSet.next()) {
+	            Producto producto = new Producto();
+	            producto.setIdProducto(resultSet.getInt("id_producto"));
+	            producto.setNombreProducto(resultSet.getString("nombre_producto"));
+	            producto.setModeloProducto(resultSet.getString("modelo"));
+	            producto.setSkuProducto(resultSet.getString("sku"));
+	            producto.setIdCategoria(resultSet.getInt("id_categoria"));
+	            producto.setNombreCategoria(resultSet.getString("nombre_categoria"));
+	            producto.setIdMarca(resultSet.getInt("id_marca"));
+	            producto.setNombreMarca(resultSet.getString("nombre_marca"));
+	            producto.setDetallesProducto(resultSet.getString("detalles"));
+	            producto.setPrecioProducto(resultSet.getDouble("precio"));
+	            producto.setStockProducto(resultSet.getInt("stock"));
+	            producto.setStockMinimoProducto(resultSet.getInt("stock_minimo"));
+	            producto.setIdProveedor(resultSet.getInt("id_proveedor"));
+	            producto.setNombreProveedor(resultSet.getString("nombre_proveedor"));
+	            producto.setPesoProducto(resultSet.getDouble("peso"));
+	            producto.setDimensionesProducto(resultSet.getString("dimensiones"));
+	            producto.setGarantiaProducto(resultSet.getString("garantia"));
+	            producto.setIdEstadoProducto(resultSet.getInt("id_estado_producto"));
+	            producto.setNombreEstadoProducto(resultSet.getString("nombre_estado_producto"));
+	            producto.setFechaIncorporacionProducto(resultSet.getDate("fecha_incorporacion"));
+	            producto.setColorProducto(resultSet.getString("color_producto"));
+	            producto.setImagenProducto(resultSet.getString("imagen_producto"));
+
+	            productos.add(producto);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (resultSet != null) resultSet.close();
+	            if (callableStatement != null) callableStatement.close();
+	            if (connection != null) connection.close();
+	        } catch (Exception e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+
+	    return productos;
+	}
+
+	@Override
+	public List<Producto> listarProductosPorIdMarca(int idMarca) {
+	    Connection connection = null;
+	    CallableStatement callableStatement = null;
+	    ResultSet resultSet = null;
+	    List<Producto> productos = new ArrayList<>();
+
+	    try {
+	        connection = MySQLConnection.getConection();
+	        String sentenciaSQL = "{ CALL sp_listarProductosPorIdMarca(?) }";
+	        callableStatement = connection.prepareCall(sentenciaSQL);
+			callableStatement.setInt(1, idMarca);
+	        resultSet = callableStatement.executeQuery();
+
+	        while (resultSet.next()) {
+	            Producto producto = new Producto();
+	            producto.setIdProducto(resultSet.getInt("id_producto"));
+	            producto.setNombreProducto(resultSet.getString("nombre_producto"));
+	            producto.setModeloProducto(resultSet.getString("modelo"));
+	            producto.setSkuProducto(resultSet.getString("sku"));
+	            producto.setIdCategoria(resultSet.getInt("id_categoria"));
+	            producto.setNombreCategoria(resultSet.getString("nombre_categoria"));
+	            producto.setIdMarca(resultSet.getInt("id_marca"));
+	            producto.setNombreMarca(resultSet.getString("nombre_marca"));
+	            producto.setDetallesProducto(resultSet.getString("detalles"));
+	            producto.setPrecioProducto(resultSet.getDouble("precio"));
+	            producto.setStockProducto(resultSet.getInt("stock"));
+	            producto.setStockMinimoProducto(resultSet.getInt("stock_minimo"));
+	            producto.setIdProveedor(resultSet.getInt("id_proveedor"));
+	            producto.setNombreProveedor(resultSet.getString("nombre_proveedor"));
+	            producto.setPesoProducto(resultSet.getDouble("peso"));
+	            producto.setDimensionesProducto(resultSet.getString("dimensiones"));
+	            producto.setGarantiaProducto(resultSet.getString("garantia"));
+	            producto.setIdEstadoProducto(resultSet.getInt("id_estado_producto"));
+	            producto.setNombreEstadoProducto(resultSet.getString("nombre_estado_producto"));
+	            producto.setFechaIncorporacionProducto(resultSet.getDate("fecha_incorporacion"));
+	            producto.setColorProducto(resultSet.getString("color_producto"));
+	            producto.setImagenProducto(resultSet.getString("imagen_producto"));
+
+	            productos.add(producto);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (resultSet != null) resultSet.close();
+	            if (callableStatement != null) callableStatement.close();
+	            if (connection != null) connection.close();
+	        } catch (Exception e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+
+	    return productos;
+	}
+
+	@Override
+	public List<Producto> listarProductosPorIdProveedor(int idProveedor) {
+	    Connection connection = null;
+	    CallableStatement callableStatement = null;
+	    ResultSet resultSet = null;
+	    List<Producto> productos = new ArrayList<>();
+
+	    try {
+	        connection = MySQLConnection.getConection();
+	        String sentenciaSQL = "{ CALL sp_listarProductosPorIdProveedor(?) }";
+	        callableStatement = connection.prepareCall(sentenciaSQL);
+			callableStatement.setInt(1, idProveedor);
+	        resultSet = callableStatement.executeQuery();
+
+	        while (resultSet.next()) {
+	            Producto producto = new Producto();
+	            producto.setIdProducto(resultSet.getInt("id_producto"));
+	            producto.setNombreProducto(resultSet.getString("nombre_producto"));
+	            producto.setModeloProducto(resultSet.getString("modelo"));
+	            producto.setSkuProducto(resultSet.getString("sku"));
+	            producto.setIdCategoria(resultSet.getInt("id_categoria"));
+	            producto.setNombreCategoria(resultSet.getString("nombre_categoria"));
+	            producto.setIdMarca(resultSet.getInt("id_marca"));
+	            producto.setNombreMarca(resultSet.getString("nombre_marca"));
+	            producto.setDetallesProducto(resultSet.getString("detalles"));
+	            producto.setPrecioProducto(resultSet.getDouble("precio"));
+	            producto.setStockProducto(resultSet.getInt("stock"));
+	            producto.setStockMinimoProducto(resultSet.getInt("stock_minimo"));
+	            producto.setIdProveedor(resultSet.getInt("id_proveedor"));
+	            producto.setNombreProveedor(resultSet.getString("nombre_proveedor"));
+	            producto.setPesoProducto(resultSet.getDouble("peso"));
+	            producto.setDimensionesProducto(resultSet.getString("dimensiones"));
+	            producto.setGarantiaProducto(resultSet.getString("garantia"));
+	            producto.setIdEstadoProducto(resultSet.getInt("id_estado_producto"));
+	            producto.setNombreEstadoProducto(resultSet.getString("nombre_estado_producto"));
+	            producto.setFechaIncorporacionProducto(resultSet.getDate("fecha_incorporacion"));
+	            producto.setColorProducto(resultSet.getString("color_producto"));
+	            producto.setImagenProducto(resultSet.getString("imagen_producto"));
+
+	            productos.add(producto);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (resultSet != null) resultSet.close();
+	            if (callableStatement != null) callableStatement.close();
+	            if (connection != null) connection.close();
+	        } catch (Exception e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+
+	    return productos;
+	}
+
+	@Override
+	public List<Producto> listarProductosPorIdEstadoProducto(int idEstadoProducto) {
+	    Connection connection = null;
+	    CallableStatement callableStatement = null;
+	    ResultSet resultSet = null;
+	    List<Producto> productos = new ArrayList<>();
+
+	    try {
+	        connection = MySQLConnection.getConection();
+	        String sentenciaSQL = "{ CALL sp_listarProductosPorIdEstadoProducto(?) }";
+	        callableStatement = connection.prepareCall(sentenciaSQL);
+			callableStatement.setInt(1, idEstadoProducto);
+	        resultSet = callableStatement.executeQuery();
+
+	        while (resultSet.next()) {
+	            Producto producto = new Producto();
+	            producto.setIdProducto(resultSet.getInt("id_producto"));
+	            producto.setNombreProducto(resultSet.getString("nombre_producto"));
+	            producto.setModeloProducto(resultSet.getString("modelo"));
+	            producto.setSkuProducto(resultSet.getString("sku"));
+	            producto.setIdCategoria(resultSet.getInt("id_categoria"));
+	            producto.setNombreCategoria(resultSet.getString("nombre_categoria"));
+	            producto.setIdMarca(resultSet.getInt("id_marca"));
+	            producto.setNombreMarca(resultSet.getString("nombre_marca"));
+	            producto.setDetallesProducto(resultSet.getString("detalles"));
+	            producto.setPrecioProducto(resultSet.getDouble("precio"));
+	            producto.setStockProducto(resultSet.getInt("stock"));
+	            producto.setStockMinimoProducto(resultSet.getInt("stock_minimo"));
+	            producto.setIdProveedor(resultSet.getInt("id_proveedor"));
+	            producto.setNombreProveedor(resultSet.getString("nombre_proveedor"));
+	            producto.setPesoProducto(resultSet.getDouble("peso"));
+	            producto.setDimensionesProducto(resultSet.getString("dimensiones"));
+	            producto.setGarantiaProducto(resultSet.getString("garantia"));
+	            producto.setIdEstadoProducto(resultSet.getInt("id_estado_producto"));
+	            producto.setNombreEstadoProducto(resultSet.getString("nombre_estado_producto"));
+	            producto.setFechaIncorporacionProducto(resultSet.getDate("fecha_incorporacion"));
+	            producto.setColorProducto(resultSet.getString("color_producto"));
+	            producto.setImagenProducto(resultSet.getString("imagen_producto"));
+
+	            productos.add(producto);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (resultSet != null) resultSet.close();
+	            if (callableStatement != null) callableStatement.close();
+	            if (connection != null) connection.close();
+	        } catch (Exception e2) {
+	            e2.printStackTrace();
+	        }
+	    }
+
+	    return productos;
+	}
+
+	// SI DA ALGÚN TIPO DE RROR FUERTE CAMBIAR A VENTAMODEL
+	@Override
+	public List<Producto> listarProductosPorCategoria() {
+		List<Producto> lista = new ArrayList<Producto>();
+		Connection connection = null;
+		CallableStatement callableStatement = null;
+		ResultSet resultSet = null;
+		
+		try {
+			
+			connection = MySQLConnection.getConection();
+			String sentenciaSQL = "{ CALL sp_productos_vendidos_categoria() }";
+			callableStatement = connection.prepareCall(sentenciaSQL);
+			
+			resultSet = callableStatement.executeQuery();
+			
+			while (resultSet != null && resultSet.next()) {
+				Producto productoAux = new Producto();
+				
+				productoAux.setNombreCategoria(resultSet.getString("nombre_categoria"));
+				productoAux.setStockProducto(resultSet.getInt("suma_total"));
+		
+				lista.add(productoAux);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				
+	            if (resultSet != null) { resultSet.close(); }
+	            if (callableStatement != null) { callableStatement.close(); }
+	            if (connection != null) { connection.close(); }
+				
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return lista;
+	}
+
+	@Override
+	public List<Producto> listarStockProducto() {
+		List<Producto> listaStockProducto = new ArrayList<Producto>();
+		Connection connection = null;
+		CallableStatement callableStatement = null;
+		ResultSet resultSet = null;
+		
+		try {
+			
+			connection = MySQLConnection.getConection();
+			String sentenciaSQL = "{ CALL sp_productos_stock() }";
+			callableStatement = connection.prepareCall(sentenciaSQL);
+			
+			resultSet = callableStatement.executeQuery();
+			
+			while (resultSet != null && resultSet.next()) {
+				Producto productoAux = new Producto();
+				
+				
+				productoAux.setNombreProducto(resultSet.getString("nombre_producto"));
+				productoAux.setStockProducto(resultSet.getInt("stock"));
+		
+	            listaStockProducto.add(productoAux);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				
+	            if (resultSet != null) { resultSet.close(); }
+	            if (callableStatement != null) { callableStatement.close(); }
+	            if (connection != null) { connection.close(); }
+				
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return listaStockProducto;
+	}
+
+	@Override
+	public List<Producto> listarProductosMasIngresos() {
+		List<Producto> lista = new ArrayList<Producto>();
+		Connection connection = null;
+		CallableStatement callableStatement = null;
+		ResultSet resultSet = null;
+		
+		try {
+			
+			connection = MySQLConnection.getConection();
+			String sentenciaSQL = "{ CALL sp_productos_generan_mas_ingresos() }";
+			callableStatement = connection.prepareCall(sentenciaSQL);
+			
+			resultSet = callableStatement.executeQuery();
+			
+			while (resultSet != null && resultSet.next()) {
+				Producto productoAux = new Producto();
+				
+				productoAux.setNombreProducto(resultSet.getString("nombre_producto"));
+				productoAux.setPrecioProducto(resultSet.getDouble("monto_total"));
+				lista.add(productoAux);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				
+	            if (resultSet != null) { resultSet.close(); }
+	            if (callableStatement != null) { callableStatement.close(); }
+	            if (connection != null) { connection.close(); }
+				
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return lista;
+	}
+
+	@Override
+	public List<Producto> listarCantidadProductosPorCategoria() {
+		List<Producto> productoPorCategoria = new ArrayList<Producto>();
+		Connection connection = null;
+		CallableStatement callableStatement = null;
+		ResultSet resultSet = null;
+		
+		try {
+			
+			connection = MySQLConnection.getConection();
+			String sentenciaSQL = "{ CALL sp_cantidad_productos_categoria() }";
+			callableStatement = connection.prepareCall(sentenciaSQL);
+			
+			resultSet = callableStatement.executeQuery();
+			
+			while (resultSet != null && resultSet.next()) {
+				Producto productoAux = new Producto();
+				
+				
+				productoAux.setNombreCategoria(resultSet.getString("nombre_categoria"));
+				productoAux.setStockProducto(resultSet.getInt("Cantidad"));
+				productoPorCategoria.add(productoAux);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				
+	            if (resultSet != null) { resultSet.close(); }
+	            if (callableStatement != null) { callableStatement.close(); }
+	            if (connection != null) { connection.close(); }
+				
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return productoPorCategoria;
+	}
+
 }

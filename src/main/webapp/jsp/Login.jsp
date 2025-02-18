@@ -10,14 +10,12 @@
 	<title>Inicio de Sesión</title>
 	
 	<style>
-        /* Estilos para los mensajes de error */
         .error {
             color: red;
             font-size: 0.875rem;
             margin-top: 5px;
         }
 
-        /* Estilos para el logo */
         .bg-image {
             width: 150px;
             height: 150px;

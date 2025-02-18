@@ -1,3 +1,7 @@
+<%@page import="entity.producto.EstadoProducto"%>
+<%@page import="entity.producto.Proveedor"%>
+<%@page import="entity.producto.Marca"%>
+<%@page import="entity.producto.Categoria"%>
 <%@page import="java.util.List"%>
 <%@page import="entity.producto.Producto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -30,16 +34,6 @@
 
 <body>
 
-	<%
-		if (session.getAttribute("listadoProductos") == null) {
-	%>
-		<script type="text/javascript">
-			window.location.href="${pageContext.request.contextPath}/ProductServlet?service=Product";
-		</script>
-	<%
-		}
-	%>
-
 	<div class="container-fluid vh-100 d-flex flex-column" data-barba="container" data-barba-namespace="home">
         <div class="row flex-grow-1">
 
@@ -52,21 +46,22 @@
 			
 			<!-- CONTENIDO -->
 			<div class="col-xl-11 bg-ligth d-flex flex-column align-items-center justify-content-center mt-5 mb-5">
-				<h1 class="mb-5">Todos los Productos</h1>
+				<% if (request.getAttribute("tituloPersonalizado") != null && request.getAttribute("nombrePersonalizado") != null) { %>
+					<h1 class="mb-5"><%= request.getAttribute("tituloPersonalizado") %> (<%= request.getAttribute("nombrePersonalizado")%>) </h1>
+				<% } else { %>
+					<h1 class="mb-5">Todos los Productos</h1>
+				<% } %>
 				
 				<div class="container d-flex w-100 justify-content-between align-items-center">
 				  	<!-- Contenedor para los botones -->
 				 	<div class="d-flex gap-2">
-				    	<!-- <button class="btn btn-dark btn-lg" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight1" aria-controls="offcanvasRight">Filtros <i class="bi bi-funnel-fill"></i></button> -->
-				    	<button class="btn btn-dark btn-lg" onclick="window.location.href='jsp/AddProduct.jsp'">Agregar Producto <i class="bi bi-bookmark-plus-fill"></i></button>
+				    	<button class="btn btn-dark btn-lg" onclick="window.location.href='${pageContext.request.contextPath}/ProductServlet?service=AddProduct&serviceAdd=listar'">Agregar Producto <i class="bi bi-bookmark-plus-fill"></i></button>
+				    	<button class="btn btn-dark btn-lg" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight1" aria-controls="offcanvasRight">Filtros <i class="bi bi-funnel-fill"></i></button>
 				    	<button class="btn btn-dark btn-lg" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight2" aria-controls="offcanvasRight">Descargar Información <i class="bi bi-clipboard2-fill"></i></button>
+				  		<% if (request.getAttribute("mensajeBorrarFiltro") != null) { %>
+							<button onclick="window.location.href='${pageContext.request.contextPath}/ProductServlet?service=Product'" class="btn btn-dark btn-lg"><%= request.getAttribute("mensajeBorrarFiltro") %> <i class="bi bi-x-circle-fill ms-1"></i></button>
+				  		<% } %>
 				  	</div>
-				
-				  	<!-- Contenedor para el input de búsqueda
-				  	<div class="d-flex" style="max-width: 320px; width: 100%;">
-				    	<input type="text" class="form-control me-2" placeholder="Buscar por nombre" />
-				    	<button class="btn btn-dark d-flex" type="submit">Buscar <i class="bi bi-search ps-2"></i></button>
-				  	</div> -->
 				</div> 
 				
 				<div class="table-responsive container w-100 mt-4">
@@ -115,7 +110,7 @@
 				</div>
 			</div>
 			
-			<!-- MENÚ FILTROS 
+			<!-- MENÚ FILTROS -->
 			<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight1" aria-labelledby="offcanvasRightLabel">
 				<div class="offcanvas-header">
 					<h2 class="offcanvas-title" id="offcanvasRightLabel">Lista de Filtros</h2>
@@ -128,22 +123,90 @@
 					    	Categorías
 						</button>
 						<ul class="dropdown-menu w-100">
-					    	<li><a class="dropdown-item" href="#">Consolas y Videojuegos</a></li>
-					    	<li><a class="dropdown-item" href="#">Smartphones</a></li>
-					    	<li><a class="dropdown-item" href="#">Cables USB</a></li>
+							<%
+								List<Categoria> listadoCategorias = (List<Categoria>) session.getAttribute("listadoCategoria");
+									
+								if(listadoCategorias != null && !listadoCategorias.isEmpty()) {
+									for(Categoria item: listadoCategorias) {
+							%>
+					    		<li><a class="dropdown-item" href="${pageContext.request.contextPath}/ProductServlet?service=ProductFiltros&diferenciador=categoria&idCategoria=<%= item.getIdCategoria() %>"><%= item.getNombreCategoria() %></a></li>
+					    	<%
+									}
+								} else {
+							%>
+								<li><p class="dropdown-item">No hay elementos para filtrar.</p></li>
+							<%
+								}
+							%>
 						</ul>
 					</div>
 			        <div class="dropdown">
-						<button class="btn btn-dark dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<button class="btn btn-dark dropdown-toggle mb-3 w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 					    	Marcas
 						</button>
 						<ul class="dropdown-menu w-100">
-					    	<li><a class="dropdown-item" href="#">Sony</a></li>
-					    	<li><a class="dropdown-item" href="#">Nintendo</a></li>
+							<%
+								List<Marca> listadoMarcas = (List<Marca>) session.getAttribute("listadoMarca");
+								if(listadoMarcas != null && !listadoMarcas.isEmpty()) {
+									for(Marca item: listadoMarcas) {
+							%>
+					    		<li><a class="dropdown-item" href="${pageContext.request.contextPath}/ProductServlet?service=ProductFiltros&diferenciador=marca&idMarca=<%= item.getIdMarca() %>"><%= item.getNombreMarca() %></a></li>
+					    	<%
+									}
+								} else {
+							%>
+								<li><p class="dropdown-item">No hay elementos para filtrar.</p></li>
+							<%
+								}
+							%>
+						</ul>
+					</div>
+					<div class="dropdown">
+						<button class="btn btn-dark dropdown-toggle mb-3 w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+					    	Proveedores
+						</button>
+						<ul class="dropdown-menu w-100">
+							<%
+								List<Proveedor> listadoProveedores = (List<Proveedor>) session.getAttribute("listadoProveedor");
+									
+								if(listadoProveedores != null && !listadoProveedores.isEmpty()) {
+									for(Proveedor item: listadoProveedores) {
+							%>
+					    		<li><a class="dropdown-item" href="${pageContext.request.contextPath}/ProductServlet?service=ProductFiltros&diferenciador=proveedor&idProveedor=<%= item.getIdProveedor() %>"><%= item.getNombreProveedor() %></a></li>
+					    	<%
+									}
+								} else {
+							%>
+								<li><p class="dropdown-item">No hay elementos para filtrar.</p></li>
+							<%
+								}
+							%>
+						</ul>
+					</div>
+					<div class="dropdown">
+						<button class="btn btn-dark dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+					    	Estado del Producto
+						</button>
+						<ul class="dropdown-menu w-100">
+							<%
+								List<EstadoProducto> listadoEstadoProducto = (List<EstadoProducto>) session.getAttribute("listadoEstadoProducto");
+									
+								if(listadoEstadoProducto != null && !listadoEstadoProducto.isEmpty()) {
+									for(EstadoProducto item: listadoEstadoProducto) {
+							%>
+					    		<li><a class="dropdown-item" href="${pageContext.request.contextPath}/ProductServlet?service=ProductFiltros&diferenciador=estadoproducto&idEstadoProducto=<%= item.getIdEstadoProducto() %>"><%= item.getNombreEstadoProducto() %></a></li>
+					    	<%
+									}
+								} else {
+							%>
+								<li><p class="dropdown-item">No hay elementos para filtrar.</p></li>
+							<%
+								}
+							%>
 						</ul>
 					</div>
 				</div>
-			</div> -->
+			</div>
 			
 			<!-- MENÚ REPORTES -->
 			<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight2" aria-labelledby="offcanvasRightLabel">
@@ -215,7 +278,6 @@
 		
 	<% if(listadoProductos != null) { %>
         $(document).ready(function () {
-            // Datos obtenidos desde Scriptlet en JSP
             var data = [
                 ["SKU", "Nombre", "Categoría", "Modelo", "Marca", "Precio", "Stock", "Proveedor", "Peso", "Dimensiones", "Estado", "Garantía", "Color", "Fecha de Incorporación"], // Encabezados
                 <% for (Producto pro : listadoProductos) { %>
@@ -237,7 +299,6 @@
                 <% } %>
             ];
 
-            // Exportar a Excel
             $('#exportExcel').on('click', function () {
                 const ws = XLSX.utils.aoa_to_sheet(data);
                 const wb = XLSX.utils.book_new();
@@ -245,10 +306,8 @@
                 XLSX.writeFile(wb, "informe_excel_productos_<%= java.time.LocalDate.now() %>.xlsx");
             });
 
-            // Exportar a PDF
             $('#exportPDF').on('click', function () {
                 const docDefinition = {
-                        // Orientación horizontal y tamaño de página A4
                         pageOrientation: 'landscape',
                         pageSize: 'A4',
                         content: [
@@ -256,11 +315,9 @@
                             {
                                 table: {
                                     headerRows: 1,
-                                    // Establece anchos automáticos para cada columna
                                     widths: Array(data[0].length).fill('auto'),
                                     body: data
                                 },
-                                // Aplica un fondo al encabezado para resaltarlo
                                 layout: {
                                     fillColor: function (rowIndex, node, columnIndex) {
                                         return rowIndex === 0 ? '#CCCCCC' : null;
@@ -275,7 +332,6 @@
                                 margin: [0, 0, 0, 10]
                             }
                         },
-                        // Ajusta el tamaño de fuente por defecto para que quepa más contenido
                         defaultStyle: {
                             fontSize: 8
                         }

@@ -38,8 +38,8 @@ public class HomeServlet extends HttpServlet {
 		List<Producto> listadoProductosSinStock = daoProducto.cantidadProductosSinStock();
 		
 		request.setAttribute("numeroProductosDisponibles", listadoProductosDisponibles.size());
-		request.setAttribute("numeroProductosStockMinimo", listadoProductosStockMinimo.size());
-		request.setAttribute("numeroProductosSinStock", listadoProductosSinStock.size());
+		request.setAttribute("productosStockMinimo", listadoProductosStockMinimo);
+		request.setAttribute("productosSinStock", listadoProductosSinStock);
 		
 		request.getRequestDispatcher("jsp/Home.jsp").forward(request, response);
 		

@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 import dao.DAOFactory;
@@ -28,8 +29,6 @@ import interfaces.ProductoInterface;
 @MultipartConfig
 public class ProductServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
-	private static final String RUTA_RELATIVA = "imagesProducts/";
 	
     public ProductServlet() {
         super();
@@ -45,6 +44,7 @@ public class ProductServlet extends HttpServlet {
 		
 		switch (service) {
 			case "Product" -> productServlet(request, response, daoProducto, session);
+			case "ProductFiltros" -> listarProductosPorFiltros(request, response, daoProducto, session);
 			case "AddProduct" -> addProductServlet(request, response, daoProducto, session);
 			default -> response.sendRedirect("jsp/404.jsp");
 		}
@@ -52,10 +52,12 @@ public class ProductServlet extends HttpServlet {
 	}
 
 	protected void productServlet(HttpServletRequest request, HttpServletResponse response, ProductoInterface daoProducto, HttpSession session) throws ServletException, IOException {
-		
-		if (session.getAttribute("listadoProductos") == null) {
-			actualizarProductos(daoProducto, session);
-		}
+
+		actualizarCategorias(daoProducto, session);
+		actualizarMarcas(daoProducto, session);
+		actualizarProveedores(daoProducto, session);
+		actualizarEstadosProductos(daoProducto, session);
+		actualizarProductos(daoProducto, session);
 		
 		request.getRequestDispatcher("jsp/Products.jsp").forward(request, response);
 		
@@ -92,6 +94,14 @@ public class ProductServlet extends HttpServlet {
 			actualizarProveedores(daoProducto, session);
 			actualizarEstadosProductos(daoProducto, session);
 			actualizarProductos(daoProducto, session);
+		}
+		
+		List<Producto> listaProductos = daoProducto.listarProductos();
+		listaProductos.sort(Comparator.comparingInt(Producto::getIdProducto));
+		
+		if (listaProductos.isEmpty() == false) {
+			Producto ultimoProducto = listaProductos.getLast();
+			request.setAttribute("ultimoIdProducto", ultimoProducto.getIdProducto());
 		}
 		
 		request.getRequestDispatcher("jsp/AddProduct.jsp").forward(request, response);
@@ -142,7 +152,7 @@ public class ProductServlet extends HttpServlet {
 		
 		try {
 			LocalDate fechaLocalDate = LocalDate.parse(fechaIncorporacionProducto);
-			fechaSQL = Date.valueOf(fechaLocalDate); // variable para la base de datos
+			fechaSQL = Date.valueOf(fechaLocalDate);
 		} catch (Exception e) { e.printStackTrace(); }
 		
 		String colorProducto = request.getParameter("txtColorProducto");
@@ -156,7 +166,7 @@ public class ProductServlet extends HttpServlet {
 		File imagenArchivo = new File(directorioImagenes, nombreImagen);
 		fotoProducto.write(imagenArchivo.getAbsolutePath());
 
-		String fotoProductoURL = "imagesProducts/" + nombreImagen; // Variable para la base de datos
+		String fotoProductoURL = "imagesProducts/" + nombreImagen;
 		
 		// CREACIÓN DEL OBJETO
 		Producto productoAux = new Producto();
@@ -232,22 +242,18 @@ public class ProductServlet extends HttpServlet {
 
 		String nuevaFotoProductoURL = null;
 
-		// Obtener rutas reales del servidor
 		String rutaReal = getServletContext().getRealPath("/");
 		File directorioImagenes = new File(rutaReal + "imagesProducts/");
 
 		if (fotoProducto != null && fotoProducto.getSize() > 0) {
-		    // Guardar nueva imagen
 		    String nombreImagen = Paths.get(fotoProducto.getSubmittedFileName()).getFileName().toString();
 		    File imagenArchivo = new File(directorioImagenes, nombreImagen);
 		    fotoProducto.write(imagenArchivo.getAbsolutePath());
-		    nuevaFotoProductoURL = "/imagesProducts/" + nombreImagen; // Usar ruta contextual
+		    nuevaFotoProductoURL = "/imagesProducts/" + nombreImagen;
 		} else {
-		    // Mantener imagen existente
 		    nuevaFotoProductoURL = productoEncontrado.getImagenProducto();
 		}
 
-		// Eliminar imagen anterior solo si hay una nueva
 		if (!nuevaFotoProductoURL.equals(productoEncontrado.getImagenProducto())) {
 		    String nombreImagenAntigua = Paths.get(productoEncontrado.getImagenProducto()).getFileName().toString();
 		    File imagenAntigua = new File(directorioImagenes, nombreImagenAntigua);
@@ -298,11 +304,9 @@ public class ProductServlet extends HttpServlet {
 		// Elimina la imagen del producto seleccionado
 		String imagenURL = productoEncontrado.getImagenProducto();
 		if (imagenURL != null && !imagenURL.isEmpty()) {
-	        // Construir la ruta completa de la imagen
 	        String rutaReal = getServletContext().getRealPath("/");
 	        File imagenArchivo = new File(rutaReal, imagenURL);
 
-	        // Eliminar la imagen si existe
 	        if (imagenArchivo.exists()) {
 	            if (imagenArchivo.delete()) {
 	                System.out.println("Imagen eliminada: " + imagenArchivo.getAbsolutePath());
@@ -316,6 +320,47 @@ public class ProductServlet extends HttpServlet {
 		
 		daoProducto.eliminarProducto(idProducto);
 		actualizarProductos(daoProducto, session);
+		request.getRequestDispatcher("jsp/Products.jsp").forward(request, response);
+		
+	}
+	
+	protected void listarProductosPorFiltros(HttpServletRequest request, HttpServletResponse response, ProductoInterface daoProducto, HttpSession session) throws ServletException, IOException {
+		
+		String diferenciador = request.getParameter("diferenciador");
+		
+		switch (diferenciador.toLowerCase()){
+			case "categoria" -> {
+				int idCategoria = Integer.parseInt(request.getParameter("idCategoria"));
+				List<Producto> listadoProductosPorCategoria = daoProducto.listarProductosPorIdCategoria(idCategoria);
+				request.setAttribute("tituloPersonalizado", "Productos por Categoría");
+				request.setAttribute("nombrePersonalizado", daoProducto.encontrarCategoria(idCategoria).getNombreCategoria());
+				session.setAttribute("listadoProductos", listadoProductosPorCategoria);
+			}
+			case "marca" -> {
+				int idMarca = Integer.parseInt(request.getParameter("idMarca"));
+				List<Producto> listadoProductosPorMarca = daoProducto.listarProductosPorIdMarca(idMarca);
+				request.setAttribute("tituloPersonalizado", "Productos por Marca");
+				request.setAttribute("nombrePersonalizado", daoProducto.encontrarMarca(idMarca).getNombreMarca());
+				session.setAttribute("listadoProductos", listadoProductosPorMarca);
+			}
+			case "proveedor" -> {
+				int idProveedor = Integer.parseInt(request.getParameter("idProveedor"));
+				List<Producto> listadoProductosPorProveedor = daoProducto.listarProductosPorIdProveedor(idProveedor);
+				request.setAttribute("tituloPersonalizado", "Productos por Proveedor");
+				request.setAttribute("nombrePersonalizado", daoProducto.encontrarProveedor(idProveedor).getNombreProveedor());
+				session.setAttribute("listadoProductos", listadoProductosPorProveedor);
+			}
+			case "estadoproducto" -> {
+				int idEstadoProducto = Integer.parseInt(request.getParameter("idEstadoProducto"));
+				List<Producto> listadoProductosPorEstadoProducto = daoProducto.listarProductosPorIdEstadoProducto(idEstadoProducto);
+				request.setAttribute("tituloPersonalizado", "Productos por Estado del Producto");
+				request.setAttribute("nombrePersonalizado", daoProducto.encontrarEstadoProducto(idEstadoProducto).getNombreEstadoProducto());
+				session.setAttribute("listadoProductos", listadoProductosPorEstadoProducto);
+			}
+			default -> response.sendRedirect("jsp/404.jsp");
+		}
+		
+		request.setAttribute("mensajeBorrarFiltro", "Borrar Filtro");
 		request.getRequestDispatcher("jsp/Products.jsp").forward(request, response);
 		
 	}

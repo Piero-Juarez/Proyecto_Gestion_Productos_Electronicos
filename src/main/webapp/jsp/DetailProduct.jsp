@@ -152,7 +152,7 @@
 			
 			        <!-- Botones -->
 			        <div class="text-center mt-4">
-			        	<button onclick="window.location.href='jsp/Products.jsp'" class="btn btn-dark px-5 mx-2">
+			        	<button onclick="window.location.href='${pageContext.request.contextPath}/ProductServlet?service=Product'" class="btn btn-dark px-5 mx-2">
 			        		Regresar <i class="bi bi-box-arrow-left ps-1"></i>
 			        	</button>
 			            <button type="button" class="btn btn-dark px-5 mx-2" data-bs-toggle="modal" data-bs-target="#modalModificarProducto">

@@ -3,7 +3,9 @@ package interfaces;
 import java.util.List;
 
 import entity.cliente.Cliente;
+import entity.cliente.ClienteDocumento;
 import entity.producto.Producto;
+import entity.venta.MetodoPagoPreferido;
 
 public interface ClienteInterface {
 
@@ -18,4 +20,7 @@ public interface ClienteInterface {
 	public Cliente encontrarClientePorRUC(String RucCliente);
 	public List<Producto> listaProductosCompraCliente(int idCliente);
 	public List<Cliente> listaClienteMasCompras();
+	public List<ClienteDocumento> listaCantidadClienteSegunDocumento();
+	public List<MetodoPagoPreferido> metodoPagoPreferidoCliente();
+	
 }

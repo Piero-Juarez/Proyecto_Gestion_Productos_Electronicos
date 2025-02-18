@@ -758,4 +758,41 @@ public class VentaModel implements VentaInterface {
 		return listaVentas;
 	}
 
+	@Override
+	public List<Venta> montoTotalDiario() {
+		List<Venta> listaVenta = new ArrayList<Venta> ();
+		Connection connection = null;
+		CallableStatement callableStatement = null;
+		ResultSet resultSet = null;
+		
+		try{
+			
+			connection = MySQLConnection.getConection();
+			String sentenciaSQL = "{ call sp_montoTotalDia() }";
+			callableStatement = connection.prepareCall(sentenciaSQL);
+			
+			resultSet = callableStatement.executeQuery();
+	        
+			while(resultSet != null && resultSet.next()) {
+				Venta ventaDiaria = new Venta();
+				ventaDiaria.setFecha(resultSet.getDate("fecha").toLocalDate());
+				ventaDiaria.setMontoTotal(resultSet.getBigDecimal("total_ventas"));
+				listaVenta.add(ventaDiaria);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				 if (resultSet != null) { resultSet.close(); }
+		         if (callableStatement != null) { callableStatement.close(); }
+		         if (connection != null) { connection.close(); }
+			}catch(Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return listaVenta;
+	}
+
 }
