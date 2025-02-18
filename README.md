@@ -3,12 +3,14 @@
 
 ## Descripción
 
-Aplicación web para la gestión, administración y venta de productos electrónicos implementado con Jakarta EE y MySQL,
-que permite administrar todo el ciclo de vida de productos, clientes y trabajadores mediante operaciones CRUD.
-Las ventas se registran en Boleta o Factura, con la capacidad de generar y exportar el ticket de venta en PDF.
-El sistema incluye un módulo de transacciones para listar ventas realizadas, también un módulo de paneles de gráficos estadísticos para métricas clave.
-Opciones para exportar tablas de productos, clientes, trabajadores, transacciones y gráficos a Excel o PDF.
-Además, cuenta con un módulo de configuración para gestionar categorías, proveedores, marcas y estados de productos.
+Aplicación web para la gestión, administración y venta de productos electrónicos implementado con Jakarta EE y MySQL, que permite administrar todo el ciclo de vida de productos, clientes y trabajadores mediante operaciones CRUD.
+
+Características destacadas:
+- Las ventas se registran en Boleta o Factura, con la capacidad de generar y exportar el ticket de venta en PDF.
+- Módulo de transacciones para listar ventas realizadas.
+- Módulo de paneles de gráficos estadísticos para métricas clave.
+- Opciones para exportar tablas de productos, clientes, trabajadores, transacciones y gráficos a Excel o PDF.
+- Módulo de configuración para gestionar categorías, proveedores, marcas y estados de productos.
 
 ## Tecnologías Utilizadas
 | Tecnología  | Descripción |
