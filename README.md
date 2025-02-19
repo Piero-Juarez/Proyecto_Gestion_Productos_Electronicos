@@ -26,7 +26,7 @@ Características destacadas:
 - ApexCharts.JS: [Enlace a su web oficial](https://apexcharts.com/)
 - Isotope: [Enlace a su web oficial](https://isotope.metafizzy.co/)
 
-## Probar la aplicación
+## Prueba la aplicación
 1. Clonar el repositorio:  
    ```bash
    git clone https://github.com/Piero-Juarez/Proyecto_Gestion_Productos_Electronicos.git
