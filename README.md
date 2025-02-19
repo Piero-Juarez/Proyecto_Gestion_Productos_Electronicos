@@ -1,4 +1,4 @@
-# Proyecto Gestión de Productos Electrónicos
+# Proyecto - Gestión de Productos Electrónicos
 ![Página de inicio](https://i.imgur.com/NdhkOED.png)
 
 ## Descripción
