@@ -22,6 +22,7 @@ Características destacadas:
 | Javascript | Lenguaje de programación utilizado en el front-end para manejar la interactividad del usuario. |
 
 ## Librerías utilizadas
+- Bootstrap: [Enlace a su web oficial](https://getbootstrap.com/)
 - DataTable: [Enlace a su web oficial](https://datatables.net/)
 - ApexCharts.JS: [Enlace a su web oficial](https://apexcharts.com/)
 - Isotope: [Enlace a su web oficial](https://isotope.metafizzy.co/)
